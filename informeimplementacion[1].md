@@ -611,3 +611,11 @@ Archivo: `.github/workflows/build.yml`
 
 
 ## Conclusiones 
+
+- Las tres estrategias fueron implementadas modularmente, permitiendo su comparación directa en tiempo y costo.
+
+- Fuerza Bruta asegura el óptimo pero es computacionalmente inviable para instancias grandes.
+
+- Voraz es la más rápida y razonable en la práctica pero no garantiza la solución optima.
+
+- Programación Dinámica ofrece una solución exacta para tamaños pequeños y medianos gracias a la reutilización de subproblemas.
