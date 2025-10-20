@@ -188,32 +188,48 @@ Para cada tablón:
 - Se agrega al **costo total** el producto de la prioridad por el retraso.  
 
 ```mermaid
-graph TD
-    A[Inicio] --> B[Recibir arreglo 'farm']
-    B --> C[Calcular número de tablones n = farm.length / 3]
-    C --> D[Inicializar arreglos 'used' y 'current']
-    D --> E[Llamar a función recursiva backtrack(farm, n, 0, used, current, best)]
+flowchart TD
+ subgraph subGraph0["Función backtrack"]
+        F["Depth == n?"]
+        E["Llamar a función recursiva backtrack con los parámetros: farm, n, 0, used, current, best"]
+        G["Evaluar permutación con evaluateCRF"]
+        H["Costo &lt; mejorCost?"]
+        I["Actualizar mejor permutación y mejor costo"]
+        J["Ignorar"]
+        K["Iterar sobre tablones disponibles i=0..n-1"]
+        L["Verificar si used indice i == false?"]
+        M["Marcar tablon como usado"]
+        N["Agregar tablón a la permutación actual"]
+        O["Llamar recursivamente backtrack: ..., depth+1"]
+        P["Desmarcar tablón usado //backtracking"]
+  end
+    A["Inicio"] --> B@{ label: "Recibir arreglo 'farm'" }
+    B --> C["Calcular número de tablones n = farm.length / 3"]
+    C --> D@{ label: "Inicializar arreglos 'used' y 'current'" }
+    D --> E
+    E --> F
+    F -- Sí --> G
+    G --> H
+    H -- Sí --> I
+    H -- No --> J
+    F -- No --> K
+    K --> L
+    L -- Sí --> M
+    M --> N
+    N --> O
+    O --> P
+    P --> Q["Retornar mejor solución encontrada"]
+    Q --> R["Crear objeto Solution con mejor costo y permutación"]
+    R --> S["Devolver resultado final"]
+    S --> T["Fin"]
 
-    subgraph "Función backtrack"
-        E --> F{depth == n?}
-        F -->|Sí| G[Evaluar permutación con evaluateCRF()]
-        G --> H{Costo < mejorCosto?}
-        H -->|Sí| I[Actualizar mejor permutación y mejor costo]
-        H -->|No| J[Ignorar]
-        F -->|No| K[Iterar sobre tablones disponibles i=0..n-1]
-        K --> L{used[i] == false?}
-        L -->|Sí| M[Marcar tablón como usado]
-        M --> N[Agregar tablón a la permutación actual]
-        N --> O[Llamar recursivamente backtrack(..., depth+1)]
-        O --> P[Desmarcar tablón usado (backtracking)]
-    end
+    B@{ shape: rect}
+    D@{ shape: rect}
+    style subGraph0 fill:transparent,stroke:none
 
-    P --> Q[Retornar mejor solución encontrada]
-    Q --> R[Crear objeto Solution con mejor costo y permutación]
-    R --> S[Devolver resultado final]
-    S --> T[Fin]
+
+
 ```
-
 
 ### Conclusión
 
