@@ -242,8 +242,6 @@ flowchart TD
 
 ## 3.2 Estrategia Voraz 
 
-## 3.2 Estrategia Voraz 
-
 ### Descripción de la técnica
 
 La **estrategia voraz** busca una solución rápida aproximando el orden óptimo sin probar todas las combinaciones.  
@@ -315,6 +313,28 @@ for (int i : indices) {
 
 **Explicación:**  
 Cada tablón se riega secuencialmente según el orden calculado, sumando su penalización si el riego se retrasa.  
+
+```mermaid
+flowchart TD
+    A[Inicio] --> B[Leer finca: arreglos ts, tr, p]
+    B --> C[Calcular razón clave_i = ts_i / p_i * tr_i]
+    C --> D[Ordenar los tablones por valor creciente de clave_i]
+    D --> E[Inicializar:
+        tiempoActual = 0
+        costoTotal = 0
+        orden ]
+    E --> F[Para cada tablón i en orden]
+    F --> G[finRiego = tiempoActual + tr_i]
+    G --> H[retraso = max:0, finRiego - ts_i]
+    H --> I[penalización = p_i * retraso]
+    I --> J[costoTotal += penalización]
+    J --> K[tiempoActual = finRiego]
+    K --> L[Agregar i al arreglo orden]
+    L --> M{Quedan tablones?}
+    M -->|Sí| F
+    M -->|No| N[Devolver Solution: costoTotal, orden]
+    N --> O[Fin]
+```
 
 ### Ejemplo
 
@@ -527,6 +547,54 @@ memo.put(estadoActual, new Resultado(costoMinimo, mejorTablon));
 
 Finalmente, se reconstruye el orden óptimo a partir de las decisiones almacenadas en `memo`, siguiendo los tablones seleccionados en cada estado.
 
+```mermaid
+flowchart TD
+ subgraph subGraph0["Función resolverDP(finca, tiempo, S)"]
+        D{"S está vacío?"}
+        C["Llamar resolverDP: finca, tiempo= :0, S:"]
+        E["Retornar costo 0"]
+        F["Crear estado = S, tiempo"]
+        G{"Estado ya en memo?"}
+        H["Retornar memo:estado:"]
+        I["Inicializar costoMin = ∞"]
+        J["Para cada tablón i en S"]
+        K["Calcular costoActual = p_i * max:0, tiempo + tr_i - ts_i:"]
+        L["nuevoTiempo = tiempo + tr_i"]
+        M["nuevoConjunto = S - :i:"]
+        N["costoTotal = costoActual + resolverDP :finca, nuevoTiempo, nuevoConjunto:"]
+        O{"costoTotal &lt; costoMin?"}
+        P["Actualizar costoMin y mejorTablon"]
+        Q["Continuar con siguiente tablón"]
+        R["Guardar :costoMin, mejorTablon: en memo :estado:"]
+        S["Retornar resultado óptimo"]
+  end
+    A["Inicio"] --> B["Leer finca y crear conjunto S con todos los tablones"]
+    B --> C
+    C --> D
+    D -- Sí --> E
+    D -- No --> F
+    F --> G
+    G -- Sí --> H
+    G -- No --> I
+    I --> J
+    J --> K
+    K --> L
+    L --> M
+    M --> N
+    N --> O
+    O -- Sí --> P
+    O -- No --> Q
+    P --> R
+    R --> S
+    S --> T["Reconstruir orden óptimo siguiendo mejorTablon"]
+    T --> U["Construir objeto Solution :costoMin, ordenOptimo:"]
+    U --> V["Fin"]
+
+    style subGraph0 fill:transparent,stroke:none
+```
+
+
+
 ---
 
 ## 3.4 Integración general y flujo del sistema
@@ -635,3 +703,4 @@ Archivo: `.github/workflows/build.yml`
 - Voraz es la más rápida y razonable en la práctica pero no garantiza la solución optima.
 
 - Programación Dinámica ofrece una solución exacta para tamaños pequeños y medianos gracias a la reutilización de subproblemas.
+
