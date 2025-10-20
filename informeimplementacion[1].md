@@ -83,6 +83,7 @@ proyecto1/
 │   └── salidas/
 │
 └── docs/
+    └── imagenes/
     └── informe.md
 ```
 
@@ -696,6 +697,8 @@ Archivo: `.github/workflows/build.yml`
 
 ## Conclusiones 
 
+La implementación del problema del riego óptimo demostró que la elección de la estrategia algorítmica depende enteramente de la escalabilidad requerida del proyecto. Las tres soluciones se construyeron modularmente en Java, lo que permitió una medición y comparación directa de su rendimiento.
+
 - Las tres estrategias fueron implementadas modularmente, permitiendo su comparación directa en tiempo y costo.
 
 - Fuerza Bruta asegura el óptimo pero es computacionalmente inviable para instancias grandes.
@@ -703,4 +706,5 @@ Archivo: `.github/workflows/build.yml`
 - Voraz es la más rápida y razonable en la práctica pero no garantiza la solución optima.
 
 - Programación Dinámica ofrece una solución exacta para tamaños pequeños y medianos gracias a la reutilización de subproblemas.
+
 
